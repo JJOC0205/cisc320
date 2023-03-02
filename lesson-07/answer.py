@@ -7,7 +7,7 @@ class Student:
     num_subs: int  
 def mutate_student(student_string,student):
     as_list = student_string.split(" ")
-    if as_list[1].upper == 'P':
+    if as_list[1].upper() == 'P':
         if int(student.lowest_page) > int(as_list[2]) or int(student.lowest_page == 0):
             student.lowest_page = as_list[2]
         student.latest_page = as_list[2]
@@ -18,7 +18,7 @@ def mutate_student(student_string,student):
 
 def calc_logs(lines: list[str]):
     logs = {}
-    for i in range(1, int(lines[0])):
+    for i in range(1, (int(lines[0]))+1):
         newarr = lines[i].split(" ")
         newkey = newarr[0]
         if newkey not in logs:
@@ -27,11 +27,14 @@ def calc_logs(lines: list[str]):
             
     logs = sorted(logs.items(), key= lambda item: int(item[1].latest_page))
     logs = dict(logs)
+    asList = []
     for keys, value in logs.items():
-        consts = (str(keys) + " " + str(logs[keys].lowest_page) + " " + str(logs[keys].latest_page) + " ")
-        if logs[keys].num_subs and logs[keys].latest_page and logs[keys].lowest_page:
-            print(consts + str(((logs[keys].tot_score) // logs[keys].num_subs)))
-
+        consts = str((str(keys) + " " + str(value.lowest_page) + " " + str(value.latest_page) + " "))
+        if value.num_subs and value.lowest_page and value.latest_page:
+            to_print = consts + str(((value.tot_score) // value.num_subs))
+            print(to_print)
+            asList.append(to_print)
+    return asList
             
 if __name__=="__main__":
     filename = input()
