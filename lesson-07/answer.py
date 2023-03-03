@@ -32,7 +32,7 @@ def calc_logs(lines: list[str]):
         consts = str((str(keys) + " " + str(value.lowest_page) + " " + str(value.latest_page) + " "))
         if value.num_subs and value.lowest_page and value.latest_page:
             to_print = consts + str(((value.tot_score) // value.num_subs))
-            print(to_print)
+#            print(to_print)
             asList.append(to_print)
     return asList
             
