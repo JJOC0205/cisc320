@@ -27,14 +27,14 @@ def calc_logs(lines: list[str]):
             
     logs = sorted(logs.items(), key= lambda item: int(item[1].latest_page))
     logs = dict(logs)
-    asList = []
+#    asList = []
     for keys, value in logs.items():
         consts = str((str(keys) + " " + str(value.lowest_page) + " " + str(value.latest_page) + " "))
         if value.num_subs and value.lowest_page and value.latest_page:
             to_print = consts + str(((value.tot_score) // value.num_subs))
-#            print(to_print)
-            asList.append(to_print)
-    return asList
+            print(to_print)
+#            asList.append(to_print)
+#    return asList
             
 if __name__=="__main__":
     filename = input()
