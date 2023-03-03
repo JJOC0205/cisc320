@@ -19,22 +19,22 @@ def mutate_student(student_string,student):
 def calc_logs(lines: list[str]):
     logs = {}
     for i in range(1, (int(lines[0]))+1):
-        newarr = lines[i].split(" ")
-        newkey = newarr[0]
-        if newkey not in logs:
-            logs[newkey] = Student(0,0,0,0)
-        mutate_student(lines[i], logs[newkey])
+        new_arr = lines[i].split(" ")
+        new_key = new_arr[0]
+        if new_key not in logs:
+            logs[new_key] = Student(0,0,0,0)
+        mutate_student(lines[i], logs[new_key])
             
     logs = sorted(logs.items(), key= lambda item: int(item[1].latest_page))
     logs = dict(logs)
-#    asList = []
+#    as_list = []
     for keys, value in logs.items():
         consts = str((str(keys) + " " + str(value.lowest_page) + " " + str(value.latest_page) + " "))
         if value.num_subs and value.lowest_page and value.latest_page:
             to_print = consts + str(((value.tot_score) // value.num_subs))
             print(to_print)
-#            asList.append(to_print)
-#    return asList
+#            as_list.append(to_print)
+#    return as_list
             
 if __name__=="__main__":
     filename = input()
