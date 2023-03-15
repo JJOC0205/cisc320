@@ -67,7 +67,7 @@ def binary_search_time(values: list[any], low: int, high: int, target: int) -> a
         elif middle_value > target:
             return binary_search_time(values, low, high-1, target)
         else:
-            return values[target]
+            return values[middle_index]
     return values[high]
 
 
@@ -88,27 +88,23 @@ def solve(maze: str, at: int, visited: set[int]) -> str:
     Returns:
         str: The final emoji at the end of the maze.
     """
-    current_run = ""
     if at not in visited:
-        visited.add(maze[at])
+        current_symbol = maze[at]
+        visited.add (at)
         if maze[at] == '→':
-            current_run = solve(maze, at + int(maze[at+1]), visited)
-        elif maze[at] == '←':
-            current_run = solve(maze, at - int(maze[at+1]), visited)
-        elif maze[at] == '↗':
-            current_run = solve(maze, at + int(maze[at+1]), visited)
-            if (current_run == 'X'):
-                current_run = solve(maze, at + int(maze[at+2]), visited)
-        elif maze[at] == '↖':
-            current_run = solve(maze, at - int(maze[at+1]), visited)
-            if (current_run == 'X'):
-                current_run = solve(maze, at - int(maze[at+2]), visited)
-        elif maze[at] == '↕':
-            current_run = solve(maze, at - int(maze[at+1]), visited)
-            if current_run == 'X':
-                current_run = solve(maze, at + int(maze[at+2]), visited)
-
-    return current_run
+            solve(maze, at + int(maze[at+1]), visited)
+        if maze[at] == "←":
+            solve(maze, at - int(maze [at+1]), visited)
+        if maze[at] == "↕":
+            solve(maze, at - int(maze [at+1]), visited)
+            solve(maze, at + int(maze [at+2]), visited) 
+        if maze[at] == '↖':
+            solve(maze, at - int(maze [at+1]), visited)
+            solve(maze, at - int(maze [at+2]), visited)
+        if maze[at] == "↗":
+            solve(maze, at + int(maze [at+1]), visited)
+            solve(maze, at + int(maze [at+2]), visited)
+    return maze[list(visited)[-2]]
 
 
 def main(location: list[str], target_time: int):
@@ -138,6 +134,7 @@ def main(location: list[str], target_time: int):
     answer = solve(maze, 0, set())
     # Print the Answer
     print(answer)
+    print(solve('→2→9→7↕23X⚡→7↕43🐕🧩↖92🌻', 0, set()))
 
 
 if __name__ == '__main__':
