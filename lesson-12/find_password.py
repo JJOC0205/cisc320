@@ -2,7 +2,7 @@
 Dr. Bart's script to try and figure out the passwords stored in the "mysterious_drive.zip" file.
 Some parts are incomplete! Please help me by filling in the blanks.
 """
-
+#Worked with Rachel Robins
 from zipfile import Path
 import json
 
@@ -63,9 +63,9 @@ def binary_search_time(values: list[any], low: int, high: int, target: int) -> a
         middle_index = (low+high) // 2
         middle_value = values[middle_index]['time']
         if middle_value < target:
-            return binary_search_time(values, low+1, high, target)
+            return binary_search_time(values, middle_index+1, high, target)
         elif middle_value > target:
-            return binary_search_time(values, low, high-1, target)
+            return binary_search_time(values, low, middle_index-1, target)
         else:
             return values[middle_index]
     return values[high]
@@ -88,24 +88,42 @@ def solve(maze: str, at: int, visited: set[int]) -> str:
     Returns:
         str: The final emoji at the end of the maze.
     """
-    if at not in visited:
-        current_symbol = maze[at]
-        visited.add (at)
-        if maze[at] == '→':
-            solve(maze, at + int(maze[at+1]), visited)
-        if maze[at] == "←":
-            solve(maze, at - int(maze [at+1]), visited)
-        if maze[at] == "↕":
-            solve(maze, at - int(maze [at+1]), visited)
-            solve(maze, at + int(maze [at+2]), visited) 
-        if maze[at] == '↖':
-            solve(maze, at - int(maze [at+1]), visited)
-            solve(maze, at - int(maze [at+2]), visited)
-        if maze[at] == "↗":
-            solve(maze, at + int(maze [at+1]), visited)
-            solve(maze, at + int(maze [at+2]), visited)
-    return maze[list(visited)[-2]]
-
+    operators = ["→", "↕", "←", "↖", "↗", "X"]
+    result = maze[at]
+    if (not result.isdigit()) and result not in operators:
+        return result
+    elif result == "X":
+        at = visited.pop()
+        visited.add(at)
+    else:
+        if at not in visited:
+            visited.add(at)
+            if maze[at] == operators[0]:
+                at += int(maze[at+1])
+            elif maze[at] == operators[2]:
+                at -= int(maze[at+1])
+            elif maze[at] == operators[3]:
+                at -= int(maze[at+1])
+            elif maze[at] == operators[4]:
+                at += int(maze[at+1])
+            elif maze[at] == operators[1]:
+                at -= int(maze[at+1])
+        else:
+            if maze[at] == operators[3]:
+                visited.remove(at)
+                at -= int(maze[at+2])
+            elif maze[at] == operators[4]:
+                visited.remove(at)
+                at += int(maze[at+2])
+            elif maze[at] == operators[1]:
+                visited.remove(at)
+                at += int(maze[at+2])
+            else:
+                if maze[at] == operators[0]:
+                    at += int(maze[at+1])
+                elif maze[at] == operators[2]:
+                    at -= int(maze[at-1])
+    return solve(maze,at,visited)
 
 def main(location: list[str], target_time: int):
     """
@@ -131,11 +149,12 @@ def main(location: list[str], target_time: int):
     time_data = binary_search_time(passwords, 0, len(passwords)-1, target_time)
     maze = time_data['password']
     # Solve the 1d Maze
+    #print(maze) #Debugging purposes
     answer = solve(maze, 0, set())
     # Print the Answer
     print(answer)
-    print(solve('→2→9→7↕23X⚡→7↕43🐕🧩↖92🌻', 0, set()))
+    print(solve('→2→9→7↕23X⚡→7↕43🐕🧩↖92🌻', 0, set())) #Here for debugging purposes
 
 
 if __name__ == '__main__':
-    main(["Basement 2", "Quadrant A", "Region 1", "North"], 6)
+    main(["Basement 4", "Quadrant D", "Zone 2", "Conference Room 3", "South"], 11)
