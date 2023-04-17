@@ -1,4 +1,5 @@
 from password_hash import simple_hash
+#AdaIsGoodDog
 HASH_CODE = 81445731
 HASH_SIZE = 10**9
 
