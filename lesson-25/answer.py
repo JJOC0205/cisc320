@@ -1,12 +1,11 @@
 def tsp(lines, start):
     n = len(lines)
     path = []
-    visited = [False] * n
+    visited = [False] * n #Preallocation
     visited[start] = True
     path.append(start)
     current = start
     dist = 0
-    
     for i in range(n-1):
         next = -1
         shortest = float("inf")
@@ -18,7 +17,6 @@ def tsp(lines, start):
         path.append(next)
         dist += shortest
         current = next
-    
     dist += lines[path[-1]][start]
     path.append(start)
     return path, dist
@@ -26,10 +24,13 @@ def tsp(lines, start):
 if __name__=="__main__":
     filename = input()
 
-    with open("input.txt") as data_file:
+    with open(filename) as data_file:
         lines:list[str] = data_file.readlines()
     lines = [line.strip().split() for line in lines]
-    lines = [[eval(num) for num in line] for line in lines]
-    path, dist = tsp(lines, 0)
-    print(*path[:-1], sep="\n")
-    print(dist)
+    lines = [[int(num) for num in line] for line in lines]
+    all_paths = []
+    for i in range(len(lines)):
+        path, dist = tsp(lines, i)
+        all_paths.append((path, dist))
+    path, dist = min(all_paths, key=lambda x: x[1])
+    print(*path[:-1], sep="\n",end="\n"+str(dist))
