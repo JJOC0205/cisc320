@@ -1,5 +1,7 @@
 def tsp(lines, start):
     n = len(lines)
+    if not n:
+        return [], 0
     path = []
     visited = [False] * n #Preallocation
     visited[start] = True
